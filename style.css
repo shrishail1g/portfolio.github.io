@@ -1,0 +1,50 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #24292e;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header nav a {
+    color: #ddd;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    color: white;
+}
+
+.hero, .projects, .about, .contact {
+    padding: 30px;
+    text-align: center;
+    background: #fff;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.project-card {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+footer {
+    background: #24292e;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
