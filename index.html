@@ -2,91 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shrishail Golappanavar | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>John Doe | Portfolio</title>
   <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <script defer src="script.js"></script>
 </head>
 <body>
 
   <nav id="navbar">
-    <ul>
-      <li><a href="#home" class="active">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#academics">Academics</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#flipkart-business-case">Flipkart</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="nav-container">
+      <div class="nav-brand">John Doe</div>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#academics">Academics</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#flipkart-business-case">Flipkart</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-toggle" id="nav-toggle">&#9776;</div>
+    </div>
   </nav>
 
-  <header id="home">
-    <div class="hero">
-<!--       <img src="assets/profile.jpg" alt="Profile Photo" /> -->
-      <h1>Shrishail Golappanavar</h1>
+  <header id="home" class="hero-section">
+    <div class="hero-content">
+      <img src="assets/profile.jpg" alt="Profile Photo" class="hero-img" />
+      <h1>John Doe</h1>
       <p>Prefinal Year Student | Aspiring Software Engineer</p>
     </div>
   </header>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>
-      I’m a Computer Science student at KLE Technological University, passionate about building scalable systems and intelligent personalization models. I enjoy solving real-world problems using code and data.
-    </p>
-  </section>
+  <main>
+    <section id="about" class="section-card">
+      <h2>About Me</h2>
+      <p>
+        I’m a Computer Science student at Random National Institute of Technology, passionate about building scalable systems and intelligent personalization models. I enjoy solving real-world problems using code and data.
+      </p>
+    </section>
 
-  <section id="academics">
-    <h2>Academics</h2>
-    <ul>
-      <li><strong>Degree:</strong> B.E in Computer Science</li>
-      <li><strong>Institution:</strong> KLE Technological University, Hubli</li>
-      <li><strong>CGPA:</strong> 9.54 / 10</li>
-      <li><strong>Relevant Courses:</strong> Data Structures, Algorithms, Web Development, DBMS, OS</li>
-    </ul>
-  </section>
+    <section id="academics" class="section-card">
+      <h2>Academics</h2>
+      <ul>
+        <li><strong>Degree:</strong> B.Tech in Computer Science</li>
+        <li><strong>Institution:</strong> Random NIT, India</li>
+        <li><strong>CGPA:</strong> 8.63 / 10</li>
+        <li><strong>Relevant Courses:</strong> Data Structures, Algorithms, ML, DBMS, OS</li>
+      </ul>
+    </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    
-    <div class="project-card">
-      <h3>Smart Product Recommender</h3>
-      <p>A content and session-based product ranking system for e-commerce platforms to improve personalization. Combined user behavior and metadata to boost session conversion rates.</p>
-      <p><strong>Tech:</strong> Python, Pandas, Scikit-learn</p>
-    </div>
+    <section id="projects" class="section-card">
+      <h2>Projects</h2>
 
-    <div class="project-card">
-      <h3>Seller Diversity Ranker</h3>
-      <p>Built a fairness-aware re-ranking model to balance product visibility among sellers. Used click-through data and trust scores to demote overpromoted sellers.</p>
-      <p><strong>Tech:</strong> Python, XGBoost, Matplotlib</p>
-    </div>
+      <div class="project-card">
+        <div class="project-text">
+          <h3>Smart Product Recommender</h3>
+          <p>
+            A content and session-based product ranking system for e-commerce platforms to improve personalization. Combined user behavior and metadata to boost session conversion rates.
+          </p>
+          <p><strong>Tech:</strong> Python, Pandas, Scikit-learn</p>
+        </div>
+        <img src="assets/project1.png" alt="Project 1" />
+      </div>
 
-  </section>
+      <div class="project-card reverse">
+        <div class="project-text">
+          <h3>Seller Diversity Ranker</h3>
+          <p>
+            Built a fairness-aware re-ranking model to balance product visibility among sellers. Used click-through data and trust scores to demote overpromoted sellers.
+          </p>
+          <p><strong>Tech:</strong> Python, XGBoost, Matplotlib</p>
+        </div>
+        <img src="assets/project2.png" alt="Project 2" />
+      </div>
+    </section>
 
-  <section id="flipkart-business-case">
-    <h2>Dream Company: Flipkart</h2>
-    <p>
-      Flipkart, India’s leading e-commerce platform, has been instrumental in democratizing online shopping. My passion for scalable personalization and fair ranking systems aligns with Flipkart’s mission.
-    </p>
+    <section id="flipkart-business-case" class="section-card">
+      <h2>Dream Company: Flipkart</h2>
+      <p>
+        Flipkart, India’s leading e-commerce platform, has been instrumental in democratizing online shopping. My passion for scalable personalization and fair ranking systems aligns with Flipkart’s mission.
+      </p>
 
-    <h3>Business Case 1: Improving Ranking in Niche Categories</h3>
-    <p><strong>Problem:</strong> Poor relevance in low-signal or niche categories.</p>
-    <p><strong>Proposal:</strong> A hybrid personalization model using content filtering and session signals.</p>
-    <p><strong>Impact:</strong> Better visibility, increased engagement, and improved conversion.</p>
+      <div class="business-case">
+        <img src="assets/niche_category.png" alt="Niche Categories" />
+        <div>
+          <h3>Business Case 1: Improving Ranking in Niche Categories</h3>
+          <p><strong>Problem:</strong> Poor relevance in low-signal or niche categories.</p>
+          <p><strong>Proposal:</strong> A hybrid personalization model using content filtering and session signals.</p>
+          <p><strong>Impact:</strong> Better visibility, increased engagement, and improved conversion.</p>
+        </div>
+      </div>
 
-    <h3>Business Case 2: Reducing Seller Promotion Bias</h3>
-    <p><strong>Problem:</strong> Top sellers dominate rankings due to boosts, lowering variety.</p>
-    <p><strong>Proposal:</strong> Introduce a fairness-aware re-ranking layer to balance exposure.</p>
-    <p><strong>Impact:</strong> Improved trust, fair seller ecosystem, and increased user satisfaction.</p>
-  </section>
+      <div class="business-case reverse">
+        <img src="assets/seller_bias.png" alt="Seller Promotion Bias" />
+        <div>
+          <h3>Business Case 2: Reducing Seller Promotion Bias</h3>
+          <p><strong>Problem:</strong> Top sellers dominate rankings due to boosts, lowering variety.</p>
+          <p><strong>Proposal:</strong> Introduce a fairness-aware re-ranking layer to balance exposure.</p>
+          <p><strong>Impact:</strong> Improved trust, fair seller ecosystem, and increased user satisfaction.</p>
+        </div>
+      </div>
+    </section>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <ul>
-      <li>Email: shrishail.g@gmail.com</li>
-<!--       <li>GitHub: github.com/johndoe</li> -->
-<!--       <li>LinkedIn: linkedin.com/in/johndoe</li> -->
-    </ul>
-  </section>
+    <section id="contact" class="section-card">
+      <h2>Contact</h2>
+      <ul>
+        <li>Email: john.doe@example.com</li>
+        <li>GitHub: <a href="https://github.com/johndoe" target="_blank" rel="noopener noreferrer">github.com/johndoe</a></li>
+        <li>LinkedIn: <a href="https://linkedin.com/in/johndoe" target="_blank" rel="noopener noreferrer">linkedin.com/in/johndoe</a></li>
+      </ul>
+    </section>
+  </main>
 
-  <script src="script.js"></script>
+  <button id="backToTop" title="Back to Top">&#8679;</button>
+
 </body>
 </html>
