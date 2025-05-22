@@ -1,20 +1,22 @@
-// Highlight active navbar item based on scroll position
+// Toggle mobile menu
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+navToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('show');
+});
+
+// Back to Top button
+const backToTopBtn = document.getElementById('backToTop');
+
 window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll("nav#navbar ul li a");
+  if (window.scrollY > 300) {
+    backToTopBtn.style.display = 'block';
+  } else {
+    backToTopBtn.style.display = 'none';
+  }
+});
 
-  let current = "";
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    if (scrollY >= sectionTop) {
-      current = section.getAttribute("id");
-    }
-  });
-
-  navLinks.forEach(link => {
-    link.classList.remove("active");
-    if (link.getAttribute("href") === `#${current}`) {
-      link.classList.add("active");
-    }
-  });
+backToTopBtn.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
