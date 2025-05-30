@@ -4,23 +4,95 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dynamic Pricing & Discount Optimization</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <nav><a href="index.html">← Back to Home</a></nav>
-  <main class="business-detail">
-    <h1>Dynamic Pricing & Discount Optimization</h1>
-    <img src="assets/dynamic_pricing.png" alt="Dynamic Pricing" />
-    <h2>📌 Business Case</h2>
-    <p>Adjust product prices dynamically based on demand, inventory, and competition.</p>
-    <h2>🧠 Algorithms</h2>
-    <ul>
-      <li>Multi-Armed Bandit (UCB, Thompson Sampling)</li>
-      <li>Price Elasticity Estimation via Regression</li>
-      <li>Game Theory for competitive pricing</li>
-    </ul>
-    <h2>🧠 Intuition</h2>
-    <p>Like a shopkeeper lowering prices on umbrellas just before rain.</p>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">My Portfolio</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="content">
+    <div class="case-details">
+      <h1>Dynamic Pricing & Discount Optimization</h1>
+      <img src="assets/dynamic_pricing.png" alt="Dynamic Pricing" class="case-img" />
+
+      <section>
+        <h2>📌 Business Case</h2>
+        <p>
+          Adjusting product prices dynamically in real-time is crucial for platforms like Flipkart. By analyzing demand, stock levels, and competitor prices, we can optimize pricing strategies to maximize revenue and conversion while preventing stockouts.
+        </p>
+      </section>
+
+      <section>
+        <h2>🧠 Algorithms Used</h2>
+        <ul>
+          <li><strong>Multi-Armed Bandit (MAB)</strong> - Thompson Sampling, UCB</li>
+          <li><strong>Price Elasticity Estimation</strong> - Linear Regression to measure how demand responds to price changes</li>
+          <li><strong>Game Theory</strong> - Competitive pricing analysis with Nash Equilibrium assumptions</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>🧠 Intuition</h2>
+        <p>
+          Imagine a shopkeeper quickly lowering the price of umbrellas when it starts to drizzle. Similarly, algorithms should respond to rising demand or excess supply. If competitor prices drop, our price should react instantly.
+        </p>
+      </section>
+
+      <section>
+        <h2>🧪 Sample C++ Code (Thompson Sampling Example)</h2>
+        <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;random&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+int main() {
+    int n_rounds = 1000, n_arms = 2;
+    vector&lt;int&gt; successes(n_arms, 1), failures(n_arms, 1);
+    default_random_engine generator;
+    bernoulli_distribution arm1(0.5);  // true CTR 50%
+    bernoulli_distribution arm2(0.7);  // true CTR 70%
+
+    for (int t = 0; t &lt; n_rounds; ++t) {
+        vector&lt;double&gt; sampled;
+        for (int i = 0; i &lt; n_arms; ++i) {
+            gamma_distribution&lt;double&gt; dist(successes[i], 1.0 / (failures[i]));
+            sampled.push_back(dist(generator));
+        }
+        int chosen_arm = sampled[0] &gt; sampled[1] ? 0 : 1;
+        bool reward = (chosen_arm == 0 ? arm1(generator) : arm2(generator));
+
+        if (reward)
+            successes[chosen_arm]++;
+        else
+            failures[chosen_arm]++;
+    }
+
+    cout &lt;&lt; "Arm 0 Successes: " &lt;&lt; successes[0] &lt;&lt; ", Failures: " &lt;&lt; failures[0] &lt;&lt; endl;
+    cout &lt;&lt; "Arm 1 Successes: " &lt;&lt; successes[1] &lt;&lt; ", Failures: " &lt;&lt; failures[1] &lt;&lt; endl;
+    return 0;
+}
+</code></pre>
+      </section>
+
+      <section>
+        <h2>🎯 Impact</h2>
+        <p>
+          - Real-time pricing reacts to market changes faster than manual updates.<br />
+          - Increases platform competitiveness and user trust.<br />
+          - Balances revenue optimization with inventory clearance.
+        </p>
+      </section>
+
+      <a href="index.html" class="back-btn">⬅ Back to All Business Cases</a>
+    </div>
   </main>
 </body>
 </html>
