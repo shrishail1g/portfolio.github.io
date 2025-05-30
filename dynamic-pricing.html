@@ -1,98 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dynamic Pricing & Discount Optimization</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
+
 <body>
-  <nav class="navbar">
-    <div class="container">
-      <a href="index.html" class="logo">My Portfolio</a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Dynamic Pricing & Discount Optimization</h1>
 
-  <main class="content">
-    <div class="case-details">
-      <h1>Dynamic Pricing & Discount Optimization</h1>
-      <img src="assets/dynamic_pricing.png" alt="Dynamic Pricing" class="case-img" />
+    <h2>📌 Business Case</h2>
+    <p>Flipkart wants to adjust product prices dynamically based on demand, inventory levels, competitor prices, and customer behavior.</p>
 
-      <section>
-        <h2>📌 Business Case</h2>
-        <p>
-          Adjusting product prices dynamically in real-time is crucial for platforms like Flipkart. By analyzing demand, stock levels, and competitor prices, we can optimize pricing strategies to maximize revenue and conversion while preventing stockouts.
-        </p>
-      </section>
+    <h2>🧠 Algorithms Used</h2>
+    <ul>
+      <li><strong>Multi-Armed Bandit (UCB, Thompson Sampling):</strong> Choose optimal price point based on exploration and exploitation.</li>
+      <li><strong>Price Elasticity Estimation:</strong> Regression-based models to estimate how demand responds to price changes.</li>
+      <li><strong>Game Theory:</strong> Model competitor behavior in pricing wars and determine optimal strategies.</li>
+    </ul>
 
-      <section>
-        <h2>🧠 Algorithms Used</h2>
-        <ul>
-          <li><strong>Multi-Armed Bandit (MAB)</strong> - Thompson Sampling, UCB</li>
-          <li><strong>Price Elasticity Estimation</strong> - Linear Regression to measure how demand responds to price changes</li>
-          <li><strong>Game Theory</strong> - Competitive pricing analysis with Nash Equilibrium assumptions</li>
-        </ul>
-      </section>
+    <h2>🧠 Intuition</h2>
+    <p>Like a shopkeeper lowering prices on umbrellas before rain, Flipkart must adapt to market signals to stay competitive and maximize revenue.</p>
 
-      <section>
-        <h2>🧠 Intuition</h2>
-        <p>
-          Imagine a shopkeeper quickly lowering the price of umbrellas when it starts to drizzle. Similarly, algorithms should respond to rising demand or excess supply. If competitor prices drop, our price should react instantly.
-        </p>
-      </section>
+    <h2>💥 Impact</h2>
+    <p>Increased revenue, improved inventory turnover, better competitiveness in high-demand situations, and greater buyer satisfaction during flash sales.</p>
 
-      <section>
-        <h2>🧪 Sample C++ Code (Thompson Sampling Example)</h2>
-        <pre><code class="language-cpp">#include &lt;iostream&gt;
+    <h2>💻 Sample Base Code (Thompson Sampling - C++)</h2>
+    <pre><code>#include &lt;iostream&gt;
 #include &lt;random&gt;
 #include &lt;vector&gt;
 using namespace std;
 
 int main() {
-    int n_rounds = 1000, n_arms = 2;
-    vector&lt;int&gt; successes(n_arms, 1), failures(n_arms, 1);
+    int N = 10000; // number of users
+    int d = 2; // number of price variants (arms)
+    vector<int> rewards1(N);
+    vector<int> rewards2(N);
     default_random_engine generator;
-    bernoulli_distribution arm1(0.5);  // true CTR 50%
-    bernoulli_distribution arm2(0.7);  // true CTR 70%
+    bernoulli_distribution dist1(0.2); // arm 1
+    bernoulli_distribution dist2(0.5); // arm 2
 
-    for (int t = 0; t &lt; n_rounds; ++t) {
-        vector&lt;double&gt; sampled;
-        for (int i = 0; i &lt; n_arms; ++i) {
-            gamma_distribution&lt;double&gt; dist(successes[i], 1.0 / (failures[i]));
-            sampled.push_back(dist(generator));
+    int number_of_rewards_1[d] = {0};
+    int number_of_rewards_0[d] = {0};
+    vector<int> ads_selected;
+
+    for (int n = 0; n < N; n++) {
+        int ad = 0;
+        double max_random = 0.0;
+        for (int i = 0; i < d; i++) {
+            double random_beta = beta_distribution<>(number_of_rewards_1[i] + 1, number_of_rewards_0[i] + 1)(generator);
+            if (random_beta > max_random) {
+                max_random = random_beta;
+                ad = i;
+            }
         }
-        int chosen_arm = sampled[0] &gt; sampled[1] ? 0 : 1;
-        bool reward = (chosen_arm == 0 ? arm1(generator) : arm2(generator));
-
-        if (reward)
-            successes[chosen_arm]++;
+        ads_selected.push_back(ad);
+        int reward = (ad == 0) ? dist1(generator) : dist2(generator);
+        if (reward == 1)
+            number_of_rewards_1[ad]++;
         else
-            failures[chosen_arm]++;
+            number_of_rewards_0[ad]++;
     }
 
-    cout &lt;&lt; "Arm 0 Successes: " &lt;&lt; successes[0] &lt;&lt; ", Failures: " &lt;&lt; failures[0] &lt;&lt; endl;
-    cout &lt;&lt; "Arm 1 Successes: " &lt;&lt; successes[1] &lt;&lt; ", Failures: " &lt;&lt; failures[1] &lt;&lt; endl;
+    cout &lt;&lt; "Rewards for Arm 0: " &lt;&lt; number_of_rewards_1[0] &lt;&lt; endl;
+    cout &lt;&lt; "Rewards for Arm 1: " &lt;&lt; number_of_rewards_1[1] &lt;&lt; endl;
     return 0;
-}
-</code></pre>
-      </section>
+}</code></pre>
 
-      <section>
-        <h2>🎯 Impact</h2>
-        <p>
-          - Real-time pricing reacts to market changes faster than manual updates.<br />
-          - Increases platform competitiveness and user trust.<br />
-          - Balances revenue optimization with inventory clearance.
-        </p>
-      </section>
-
-      <a href="index.html" class="back-btn">⬅ Back to All Business Cases</a>
-    </div>
-  </main>
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
 </body>
+
 </html>
