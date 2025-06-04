@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Optimizing Delivery Routes</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Optimizing Delivery Routes (Graph Algorithms)</h1>
+
+    <h2>📌 Business Case</h2>
+    <p>Flipkart must ensure that delivery agents cover multiple customer locations efficiently in a single trip. This requires computing the optimal path considering traffic conditions, distances, and timing constraints to reduce cost and maximize customer satisfaction.</p>
+
+    <h2>🔧 Algorithms Used</h2>
+    <ul>
+      <li><strong>Dijkstra's / A*:</strong> Compute the shortest path between delivery points with weights representing travel time or cost.</li>
+      <li><strong>Floyd-Warshall:</strong> Useful for precomputing all-pairs shortest paths in dense delivery graphs.</li>
+      <li><strong>Traveling Salesman Problem (TSP):</strong> Optimize the route of a single delivery agent visiting multiple locations.</li>
+      <li><strong>Minimum Spanning Tree (MST):</strong> Used to connect multiple delivery hubs with minimum infrastructure cost.</li>
+    </ul>
+
+    <h2>🧠 Intuition</h2>
+    <p>Imagine the delivery agent as a traveler who wants to complete all deliveries using the least distance and time. The challenge is similar to a tourist planning the most efficient sightseeing route.</p>
+
+    <h2>💥 Impact</h2>
+    <p>Reduced fuel usage, minimized delivery times, improved delivery success rates, and better utilization of agent capacity.</p>
+
+    <h2>💻 Sample Base Code (TSP with DP - C++)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;limits.h&gt;
+using namespace std;
+
+const int INF = 1e9;
+int tsp(int mask, int pos, vector<vector<int>>& dist, vector<vector<int>>& dp, int n) {
+    if (mask == ((1 << n) - 1))
+        return dist[pos][0];
+
+    if (dp[mask][pos] != -1)
+        return dp[mask][pos];
+
+    int ans = INF;
+    for (int city = 0; city < n; city++) {
+        if ((mask & (1 << city)) == 0) {
+            int newAns = dist[pos][city] + tsp(mask | (1 << city), city, dist, dp, n);
+            ans = min(ans, newAns);
+        }
+    }
+    return dp[mask][pos] = ans;
+}
+
+int main() {
+    int n = 4; // number of cities (delivery points)
+    vector<vector<int>> dist = {
+        {0, 20, 42, 35},
+        {20, 0, 30, 34},
+        {42, 30, 0, 12},
+        {35, 34, 12, 0}
+    };
+    vector<vector<int>> dp(1 << n, vector<int>(n, -1));
+    cout &lt;&lt; "Minimum route cost: " &lt;&lt; tsp(1, 0, dist, dp, n) &lt;&lt; endl;
+    return 0;
+}</code></pre>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
