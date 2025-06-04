@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warehouse Inventory Reorganization</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Warehouse Inventory Reorganization</h1>
+
+    <h2>📌 Business Case</h2>
+    <p>Flipkart wants to reorganize warehouse inventory such that the most frequently ordered products are stored in the most accessible locations. This helps reduce the time taken by staff to pick items during order fulfillment.</p>
+
+    <h2>🧠 Algorithms Used</h2>
+    <ul>
+      <li><strong>Greedy Sorting:</strong> Sort products by order frequency or access time.</li>
+      <li><strong>Heap / Priority Queue:</strong> Efficiently maintain top-k frequently accessed items.</li>
+      <li><strong>Hash Maps:</strong> Count accesses for each SKU.</li>
+    </ul>
+
+    <h2>🧠 Intuition</h2>
+    <p>Like placing fast-moving grocery items near the store entrance, Flipkart reorders its warehouse layout based on real-time product popularity.</p>
+
+    <h2>💥 Impact</h2>
+    <p>Improves fulfillment efficiency, reduces labor costs, and supports faster delivery during peak sales events.</p>
+
+    <h2>💻 Sample Base Code (Greedy Sorting - C++)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;unordered_map&gt;
+#include &lt;queue&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    unordered_map&lt;string, int&gt; accessFrequency = {
+        {"Phone", 120}, {"Charger", 300}, {"Laptop", 80},
+        {"Shoes", 250}, {"T-shirt", 180}, {"Book", 220}
+    };
+
+    // Convert to vector for sorting
+    vector&lt;pair&lt;string, int&gt;&gt; items(accessFrequency.begin(), accessFrequency.end());
+
+    // Sort by frequency (descending)
+    sort(items.begin(), items.end(), [](auto &a, auto &b) {
+        return a.second &gt; b.second;
+    });
+
+    cout &lt;&lt; "Optimal Warehouse Placement Order:\n";
+    for (auto &item : items) {
+        cout &lt;&lt; item.first &lt;&lt; " (" &lt;&lt; item.second &lt;&lt; ")\n";
+    }
+    return 0;
+}</code></pre>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
