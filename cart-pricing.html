@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart Price Calculation</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
+    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
+    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
+    h1 { color: #212121; margin-bottom: 20px; }
+    h2 { color: #2874f0; margin-top: 32px; }
+    p { color: #424242; line-height: 1.6; }
+    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
+    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
+    a.back:hover { text-decoration: underline; }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Shopping Cart Price Calculation</h1>
+
+    <h2>📌 Business Case</h2>
+    <p>When users add multiple items to their cart, Flipkart must calculate final prices with GST, discounts, coupons, and delivery charges applied instantly.</p>
+
+    <h2>🧠 Algorithms Used</h2>
+    <ul>
+      <li><strong>Greedy Algorithms:</strong> Apply best discount offers in order of impact.</li>
+      <li><strong>Dynamic Pricing Rules:</strong> Modular functions handle GST, delivery zones, coupon policies.</li>
+      <li><strong>Design Patterns:</strong> Strategy and Composite for flexible discount rule chaining.</li>
+    </ul>
+
+    <h2>🧠 Intuition</h2>
+    <p>Flipkart's checkout logic needs to mimic how a smart cashier would apply the best set of discounts and taxes to your cart in real-time.</p>
+
+    <h2>💥 Impact</h2>
+    <p>Improves cart conversion rates, reduces payment mismatches, and ensures better coupon utilization without overloading pricing engines.</p>
+
+    <h2>💻 Sample Base Code (Simple Pricing Logic - C++)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+struct Item {
+    double price;
+    double discount;
+    double gst;
+};
+
+double calculateFinalPrice(const vector&lt;Item&gt;& items) {
+    double total = 0.0;
+    for (auto &item : items) {
+        double discounted = item.price - item.discount;
+        double taxed = discounted + (discounted * item.gst / 100.0);
+        total += taxed;
+    }
+    return total;
+}
+
+int main() {
+    vector&lt;Item&gt; cart = {
+        {1000, 200, 18},
+        {500, 50, 12},
+        {1500, 300, 5}
+    };
+
+    cout &lt;&lt; "Final Cart Price: Rs." &lt;&lt; calculateFinalPrice(cart) &lt;&lt; endl;
+    return 0;
+}</code></pre>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
