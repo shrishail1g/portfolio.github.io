@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockout Prevention Alert</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
+    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
+    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
+    h1 { color: #212121; margin-bottom: 20px; }
+    h2 { color: #2874f0; margin-top: 32px; }
+    p { color: #424242; line-height: 1.6; }
+    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
+    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
+    a.back:hover { text-decoration: underline; }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Stockout Prevention Alert</h1>
+
+    <h2>📌 Business Case</h2>
+    <p>Flipkart wants to predict when a product is at risk of running out of stock and alert sellers in advance to replenish inventory.</p>
+
+    <h2>🧠 Algorithms Used</h2>
+    <ul>
+      <li><strong>Time Series Forecasting (ARIMA / LSTM):</strong> Predict future sales volume.</li>
+      <li><strong>Threshold-Based Triggers:</strong> Trigger alerts when predicted stock < reorder level.</li>
+      <li><strong>Regression Models:</strong> Estimate average daily movement per product-category.</li>
+    </ul>
+
+    <h2>🧠 Intuition</h2>
+    <p>Just like a petrol light warns you before running empty, Flipkart predicts low stock events and prompts sellers to refill in time.</p>
+
+    <h2>💥 Impact</h2>
+    <p>Prevents lost sales due to stockouts, ensures high availability of fast-moving items, improves seller performance metrics.</p>
+
+    <h2>💻 Sample Base Code (Stock Alert Trigger - Python)</h2>
+    <pre><code>stock_level = {
+  "iPhone 13": 20,
+  "Redmi Note 12": 4,
+  "Samsung M14": 0
+}
+
+threshold = 5
+
+def alert(stock_level):
+  for product, count in stock_level.items():
+    if count &lt; threshold:
+      print(f"ALERT: Replenish {product}! Remaining: {count}")
+
+alert(stock_level)</code></pre>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
