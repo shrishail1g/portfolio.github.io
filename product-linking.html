@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Similarity Linking</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
+    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
+    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
+    h1 { color: #212121; margin-bottom: 20px; }
+    h2 { color: #2874f0; margin-top: 32px; }
+    p { color: #424242; line-height: 1.6; }
+    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
+    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
+    a.back:hover { text-decoration: underline; }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Product Similarity Linking</h1>
+
+    <h2>📌 Business Case</h2>
+    <p>Flipkart wants to group similar products (e.g., same model listed by different sellers) together so users get a clean experience with comparison options.</p>
+
+    <h2>🧠 Algorithms Used</h2>
+    <ul>
+      <li><strong>TF-IDF / Cosine Similarity:</strong> Compare titles, specs, and descriptions.</li>
+      <li><strong>MinHash + LSH:</strong> Efficient near-duplicate detection across millions of listings.</li>
+      <li><strong>Disjoint Set Union (Union-Find):</strong> Merge linked similar items.</li>
+    </ul>
+
+    <h2>🧠 Intuition</h2>
+    <p>Just like grouping similar photos, Flipkart deduplicates catalog clutter to show customers the most relevant, clean results for one product model.</p>
+
+    <h2>💥 Impact</h2>
+    <p>Improves buyer trust, increases conversions by enabling quick comparison of seller prices and delivery times.</p>
+
+    <h2>💻 Sample Base Code (Cosine Similarity - Python)</h2>
+    <pre><code>from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+products = [
+  "Redmi Note 12 6GB RAM 128GB",
+  "Redmi Note 12 Smartphone - 6GB 128GB",
+  "Samsung Galaxy M14 Blue 4GB 64GB",
+  "Redmi Note 12 Pro 8GB 128GB"
+]
+
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(products)
+similarity = cosine_similarity(tfidf_matrix)
+
+for i in range(len(products)):
+  for j in range(i+1, len(products)):
+    print(f"Similarity({i},{j}):", round(similarity[i][j], 2))</code></pre>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
