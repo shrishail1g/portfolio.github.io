@@ -7,15 +7,65 @@
   <title>Product Similarity Linking</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
-    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
-    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
-    h1 { color: #212121; margin-bottom: 20px; }
-    h2 { color: #2874f0; margin-top: 32px; }
-    p { color: #424242; line-height: 1.6; }
-    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
-    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
-    a.back:hover { text-decoration: underline; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -24,40 +74,97 @@
   <div class="container">
     <h1>Product Similarity Linking</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart wants to group similar products (e.g., same model listed by different sellers) together so users get a clean experience with comparison options.</p>
+    <h2>📖 Story</h2>
+    <p>Imagine a customer searching for "Redmi Note 12" on Flipkart. They are presented with a flood of listings: some posted by Flipkart itself, some by different sellers, and some containing vague descriptions. This clutter not only confuses the buyer but also reduces the chance of conversion due to analysis paralysis.</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <p>To maintain customer trust and create a streamlined experience, Flipkart needs to intelligently cluster and link similar product listings. This ensures the buyer sees a single, unified product page with all available sellers, price comparisons, and delivery options.</p>
+
+    <h2>📌 Business Case</h2>
+    <p>Automatically identifying and linking similar or duplicate product listings to form a clean catalog view for buyers, enabling easier comparison and better engagement.</p>
+
+    <h2>💡 Proposed Solution</h2>
     <ul>
-      <li><strong>TF-IDF / Cosine Similarity:</strong> Compare titles, specs, and descriptions.</li>
-      <li><strong>MinHash + LSH:</strong> Efficient near-duplicate detection across millions of listings.</li>
-      <li><strong>Disjoint Set Union (Union-Find):</strong> Merge linked similar items.</li>
+      <li><strong>Text Vectorization + Cosine Similarity:</strong> For comparing product names and descriptions.</li>
+      <li><strong>MinHash & Locality-Sensitive Hashing (LSH):</strong> To efficiently detect near-duplicates at scale.</li>
+      <li><strong>Union-Find (Disjoint Set Union - DSU):</strong> To merge and manage clusters of linked products.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Just like grouping similar photos, Flipkart deduplicates catalog clutter to show customers the most relevant, clean results for one product model.</p>
+    <h2>📊 Time Complexity</h2>
+    <ul>
+      <li><strong>TF-IDF + Cosine Similarity:</strong> O(N² * D) where N is number of listings and D is average feature size.</li>
+      <li><strong>LSH:</strong> Reduces pairwise comparisons to O(N log N).</li>
+      <li><strong>DSU:</strong> Amortized O(α(N)) per merge/link operation.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Improves buyer trust, increases conversions by enabling quick comparison of seller prices and delivery times.</p>
+    <h2>💥 Business Impact</h2>
+    <ul>
+      <li>Improves catalog quality and user experience.</li>
+      <li>Enables price comparison across sellers → better trust + more conversions.</li>
+      <li>Reduces product duplication → better SEO and lower storage/query costs.</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (Cosine Similarity - Python)</h2>
-    <pre><code>from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+    <h2>💻 Sample C++ Code (TF-IDF + Cosine Similarity)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;map&gt;
+#include &lt;sstream&gt;
+#include &lt;set&gt;
+using namespace std;
 
-products = [
-  "Redmi Note 12 6GB RAM 128GB",
-  "Redmi Note 12 Smartphone - 6GB 128GB",
-  "Samsung Galaxy M14 Blue 4GB 64GB",
-  "Redmi Note 12 Pro 8GB 128GB"
-]
+// Tokenize sentence to words
+vector&lt;string&gt; tokenize(const string&amp; text) {
+    istringstream ss(text);
+    string word;
+    vector&lt;string&gt; tokens;
+    while (ss &gt;&gt; word) {
+        tokens.push_back(word);
+    }
+    return tokens;
+}
 
-vectorizer = TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(products)
-similarity = cosine_similarity(tfidf_matrix)
+// Build TF vector
+map&lt;string, double&gt; term_frequency(const string&amp; doc) {
+    vector&lt;string&gt; words = tokenize(doc);
+    map&lt;string, double&gt; tf;
+    for (string&amp; word : words) tf[word]++;
+    for (auto&amp; p : tf) p.second /= words.size();
+    return tf;
+}
 
-for i in range(len(products)):
-  for j in range(i+1, len(products)):
-    print(f"Similarity({i},{j}):", round(similarity[i][j], 2))</code></pre>
+// Compute cosine similarity
+double cosine_similarity(map&lt;string, double&gt;&amp; A, map&lt;string, double&gt;&amp; B) {
+    double dot = 0, normA = 0, normB = 0;
+    set&lt;string&gt; keys;
+    for (auto&amp; [k, _] : A) keys.insert(k);
+    for (auto&amp; [k, _] : B) keys.insert(k);
+    for (auto&amp; key : keys) {
+        double a = A[key], b = B[key];
+        dot += a * b;
+        normA += a * a;
+        normB += b * b;
+    }
+    return dot / (sqrt(normA) * sqrt(normB) + 1e-9);
+}
+
+int main() {
+    vector&lt;string&gt; products = {
+        "Redmi Note 12 6GB 128GB",
+        "Redmi Note 12 Smartphone 6GB 128GB",
+        "Samsung Galaxy M14 Blue 4GB 64GB",
+        "Redmi Note 12 Pro 8GB 128GB"
+    };
+
+    for (int i = 0; i &lt; products.size(); ++i) {
+        for (int j = i + 1; j &lt; products.size(); ++j) {
+            auto tf1 = term_frequency(products[i]);
+            auto tf2 = term_frequency(products[j]);
+            double sim = cosine_similarity(tf1, tf2);
+            cout &lt;&lt; "Similarity(" &lt;&lt; i &lt;&lt; "," &lt;&lt; j &lt;&lt; "): " &lt;&lt; sim &lt;&lt; endl;
+        }
+    }
+    return 0;
+}</code></pre>
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
