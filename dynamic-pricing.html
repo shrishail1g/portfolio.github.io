@@ -42,7 +42,7 @@
       margin-top: 32px;
     }
 
-    p {
+    p, ul {
       color: #424242;
       line-height: 1.6;
     }
@@ -74,63 +74,89 @@
   <div class="container">
     <h1>Dynamic Pricing & Discount Optimization</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart wants to adjust product prices dynamically based on demand, inventory levels, competitor prices, and customer behavior.</p>
+    <h2>📖 Real-World Scenario</h2>
+    <p>Imagine it’s the *Big Billion Days* on Flipkart. Traffic surges. Customers are ready to buy. But so are they on Amazon, Meesho, and JioMart. If our prices aren’t smartly optimized — we lose.</p>
+    <p>Now imagine if Flipkart could automatically learn — in real time — which price point maximizes clicks, conversions, and revenue based on live customer behavior. That’s the power of <strong>Dynamic Pricing & Discount Optimization</strong>.</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <h2>❗ Problem Statement</h2>
+    <p>Given multiple price options for a product, determine which pricing strategy yields the highest expected revenue while adapting to competition and customer response.</p>
+
+    <h2>🎯 Strategy Overview</h2>
     <ul>
-      <li><strong>Multi-Armed Bandit (UCB, Thompson Sampling):</strong> Choose optimal price point based on exploration and exploitation.</li>
-      <li><strong>Price Elasticity Estimation:</strong> Regression-based models to estimate how demand responds to price changes.</li>
-      <li><strong>Game Theory:</strong> Model competitor behavior in pricing wars and determine optimal strategies.</li>
+      <li>Start with **exploration**: try different prices across a small sample.</li>
+      <li>Gradually **exploit**: shift toward better-performing price points.</li>
+      <li>Ensure **adaptability**: respond to inventory & competitor price changes in real time.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Like a shopkeeper lowering prices on umbrellas before rain, Flipkart must adapt to market signals to stay competitive and maximize revenue.</p>
+    <h2>🔍 Algorithms Used</h2>
+    <ul>
+      <li><strong>Thompson Sampling (Multi-Armed Bandit):</strong> Balance between exploration and exploitation across price variants.</li>
+      <li><strong>Price Elasticity Estimation:</strong> Learn how price changes impact demand using regression models.</li>
+      <li><strong>Game Theory:</strong> Model and anticipate competitor price shifts.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Increased revenue, improved inventory turnover, better competitiveness in high-demand situations, and greater buyer satisfaction during flash sales.</p>
+    <h2>💡 Intuition</h2>
+    <p>Like a street vendor adjusting mango prices during peak summer, Flipkart should automatically adapt pricing using user feedback — not gut feeling — but data.</p>
 
-    <h2>💻 Sample Base Code (Thompson Sampling - C++)</h2>
+    <h2>💻 Sample Code (C++ Thompson Sampling)</h2>
     <pre><code>#include &lt;iostream&gt;
 #include &lt;random&gt;
 #include &lt;vector&gt;
+#include &lt;algorithm&gt;
 using namespace std;
 
+// Simulate Thompson Sampling for 2 price options
 int main() {
-    int N = 10000; // number of users
-    int d = 2; // number of price variants (arms)
-    vector<int> rewards1(N);
-    vector<int> rewards2(N);
-    default_random_engine generator;
-    bernoulli_distribution dist1(0.2); // arm 1
-    bernoulli_distribution dist2(0.5); // arm 2
+    int N = 10000; // Simulated users
+    int d = 2;     // Price variants (arms)
 
-    int number_of_rewards_1[d] = {0};
-    int number_of_rewards_0[d] = {0};
-    vector<int> ads_selected;
+    vector&lt;int&gt; reward_1(d, 0); // Success count
+    vector&lt;int&gt; reward_0(d, 0); // Failure count
 
-    for (int n = 0; n < N; n++) {
-        int ad = 0;
-        double max_random = 0.0;
-        for (int i = 0; i < d; i++) {
-            double random_beta = beta_distribution<>(number_of_rewards_1[i] + 1, number_of_rewards_0[i] + 1)(generator);
-            if (random_beta > max_random) {
-                max_random = random_beta;
-                ad = i;
+    default_random_engine gen;
+    bernoulli_distribution dist1(0.2); // Price A (lower)
+    bernoulli_distribution dist2(0.5); // Price B (optimal)
+
+    vector&lt;int&gt; selected;
+
+    for (int n = 0; n &lt; N; ++n) {
+        int selected_arm = 0;
+        double max_beta = 0.0;
+
+        for (int i = 0; i &lt; d; ++i) {
+            gamma_distribution&lt;double&gt; gamma_alpha(reward_1[i] + 1, 1.0);
+            gamma_distribution&lt;double&gt; gamma_beta(reward_0[i] + 1, 1.0);
+            double sample = gamma_alpha(gen) / (gamma_alpha(gen) + gamma_beta(gen));
+            if (sample &gt; max_beta) {
+                max_beta = sample;
+                selected_arm = i;
             }
         }
-        ads_selected.push_back(ad);
-        int reward = (ad == 0) ? dist1(generator) : dist2(generator);
-        if (reward == 1)
-            number_of_rewards_1[ad]++;
-        else
-            number_of_rewards_0[ad]++;
+
+        selected.push_back(selected_arm);
+        int reward = (selected_arm == 0) ? dist1(gen) : dist2(gen);
+        if (reward == 1) reward_1[selected_arm]++;
+        else reward_0[selected_arm]++;
     }
 
-    cout &lt;&lt; "Rewards for Arm 0: " &lt;&lt; number_of_rewards_1[0] &lt;&lt; endl;
-    cout &lt;&lt; "Rewards for Arm 1: " &lt;&lt; number_of_rewards_1[1] &lt;&lt; endl;
+    cout &lt;&lt; "✅ Total Reward Arm 0: " &lt;&lt; reward_1[0] &lt;&lt; endl;
+    cout &lt;&lt; "✅ Total Reward Arm 1: " &lt;&lt; reward_1[1] &lt;&lt; endl;
     return 0;
 }</code></pre>
+
+    <h2>⏱️ Time & Space Complexity</h2>
+    <ul>
+      <li><strong>Time:</strong> O(N × d), where N = users, d = number of price variants.</li>
+      <li><strong>Space:</strong> O(d), for storing reward history.</li>
+    </ul>
+
+    <h2>🚀 Business Impact</h2>
+    <ul>
+      <li>📈 Up to 15% increase in average revenue per product.</li>
+      <li>⏱️ Real-time adaptation to market trends and flash sales.</li>
+      <li>📦 Faster inventory turnover with dynamic clearance.</li>
+      <li>👨‍👩‍👧‍👦 Improved user satisfaction — better prices, faster delivery.</li>
+    </ul>
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
