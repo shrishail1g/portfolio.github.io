@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +42,7 @@
       margin-top: 32px;
     }
 
-    p {
+    p, ul {
       color: #424242;
       line-height: 1.6;
     }
@@ -73,26 +72,41 @@
 <body>
   <header>Flipkart Business Case</header>
   <div class="container">
-    <h1>Optimizing Delivery Routes (Graph Algorithms)</h1>
+    <h1>Optimizing Delivery Routes using Graph Algorithms</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart must ensure that delivery agents cover multiple customer locations efficiently in a single trip. This requires computing the optimal path considering traffic conditions, distances, and timing constraints to reduce cost and maximize customer satisfaction.</p>
+    <h2>🧭 The Story</h2>
+    <p>In Flipkart's fast-paced logistics network, ensuring quick and cost-effective deliveries is key. Imagine hundreds of delivery agents starting their day with a list of addresses—what's the best order to visit them? Which route saves time, cost, and avoids traffic bottlenecks?</p>
 
-    <h2>🔧 Algorithms Used</h2>
+    <h2>📌 Problem Definition</h2>
+    <p>How can Flipkart ensure that each delivery agent completes their deliveries using the least amount of fuel, time, and distance—especially when delivering to multiple locations in one trip?</p>
+
+    <h2>🧠 Proposed Solutions & Algorithms</h2>
     <ul>
-      <li><strong>Dijkstra's / A*:</strong> Compute the shortest path between delivery points with weights representing travel time or cost.</li>
-      <li><strong>Floyd-Warshall:</strong> Useful for precomputing all-pairs shortest paths in dense delivery graphs.</li>
-      <li><strong>Traveling Salesman Problem (TSP):</strong> Optimize the route of a single delivery agent visiting multiple locations.</li>
-      <li><strong>Minimum Spanning Tree (MST):</strong> Used to connect multiple delivery hubs with minimum infrastructure cost.</li>
+      <li><strong>Dijkstra's Algorithm:</strong> Efficiently finds the shortest path between two locations. Perfect when travel costs (e.g., time, distance) are positive.</li>
+      <li><strong>A* Search:</strong> Enhances Dijkstra by using heuristics (like straight-line distance) to speed up pathfinding. Useful in real-time delivery routing.</li>
+      <li><strong>Floyd-Warshall:</strong> Computes shortest paths between all pairs. Ideal for pre-processing a city graph to get route info between any two hubs.</li>
+      <li><strong>Traveling Salesman Problem (TSP):</strong> Finds the most efficient loop visiting a set of delivery points. Solved via Dynamic Programming for small instances.</li>
+      <li><strong>Minimum Spanning Tree (MST):</strong> Helps in planning efficient infrastructure like connecting regional warehouses or hubs.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Imagine the delivery agent as a traveler who wants to complete all deliveries using the least distance and time. The challenge is similar to a tourist planning the most efficient sightseeing route.</p>
+    <h2>📘 Concept Briefs</h2>
+    <ul>
+      <li><strong>Dijkstra's Algorithm:</strong> Uses a priority queue to find the shortest distance from source to all other nodes. Time Complexity: O(E log V).</li>
+      <li><strong>A* Algorithm:</strong> Uses f(n) = g(n) + h(n) where g = cost so far, h = heuristic (like straight-line distance). Faster than Dijkstra in many real-time systems.</li>
+      <li><strong>Floyd-Warshall:</strong> A Dynamic Programming algorithm that works well with dense graphs. Time Complexity: O(V³).</li>
+      <li><strong>TSP with DP:</strong> Brute-force is O(n!), but DP with bitmasks reduces it to O(n² * 2ⁿ).</li>
+      <li><strong>MST (e.g., Prim's/Kruskal's):</strong> Time Complexity: O(E log V).</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Reduced fuel usage, minimized delivery times, improved delivery success rates, and better utilization of agent capacity.</p>
+    <h2>💥 Real-World Impact</h2>
+    <ul>
+      <li>💸 Cost savings by reducing travel time and distance.</li>
+      <li>⚡ Faster deliveries improve customer satisfaction.</li>
+      <li>📦 Better utilization of delivery fleets and resources.</li>
+      <li>🌱 Lower emissions with fuel-efficient routing.</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (TSP with DP - C++)</h2>
+    <h2>💻 Sample Code: TSP using DP with Bitmasking</h2>
     <pre><code>#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;limits.h&gt;
@@ -117,7 +131,7 @@ int tsp(int mask, int pos, vector<vector<int>>& dist, vector<vector<int>>& dp, i
 }
 
 int main() {
-    int n = 4; // number of cities (delivery points)
+    int n = 4; // delivery points
     vector<vector<int>> dist = {
         {0, 20, 42, 35},
         {20, 0, 30, 34},
@@ -128,6 +142,13 @@ int main() {
     cout &lt;&lt; "Minimum route cost: " &lt;&lt; tsp(1, 0, dist, dp, n) &lt;&lt; endl;
     return 0;
 }</code></pre>
+
+    <h2>🖼️ Suggested Visuals</h2>
+    <ul>
+      <li><strong>Graph with weighted edges:</strong> Show delivery points and roads.</li>
+      <li><strong>Route heatmap:</strong> Before and after optimization.</li>
+      <li><strong>TSP path animation:</strong> Visual of agent covering all points efficiently.</li>
+    </ul>
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
