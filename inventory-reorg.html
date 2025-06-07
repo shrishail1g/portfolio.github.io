@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Warehouse Inventory Reorganization</title>
+  <title>Warehouse Inventory Optimization</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body {
@@ -47,6 +47,11 @@
       line-height: 1.6;
     }
 
+    ul {
+      color: #424242;
+      line-height: 1.6;
+    }
+
     pre {
       background-color: #f7f7f7;
       padding: 16px;
@@ -74,27 +79,44 @@
   <div class="container">
     <h1>Warehouse Inventory Reorganization</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart wants to reorganize warehouse inventory such that the most frequently ordered products are stored in the most accessible locations. This helps reduce the time taken by staff to pick items during order fulfillment.</p>
+    <h2>📦 The Story</h2>
+    <p>Imagine a Flipkart warehouse buzzing during a Big Billion Days sale. Staff are rushing to fetch chargers, phones, and books — but some popular items are stacked in the farthest corners. What if we could redesign the layout based on real-time product demand?</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <h2>📌 Problem Statement</h2>
+    <p>To minimize pick times and improve operational efficiency, frequently ordered items must be positioned closer to the dispatch zone. The goal is to adaptively reorganize the layout using data-driven decisions.</p>
+
+    <h2>🧠 Algorithms & Concepts</h2>
     <ul>
-      <li><strong>Greedy Sorting:</strong> Sort products by order frequency or access time.</li>
-      <li><strong>Heap / Priority Queue:</strong> Efficiently maintain top-k frequently accessed items.</li>
-      <li><strong>Hash Maps:</strong> Count accesses for each SKU.</li>
+      <li><strong>Greedy Sorting:</strong> Sort SKUs (stock-keeping units) based on order frequency. Fast and effective for static reorganization.</li>
+      <li><strong>Hash Map:</strong> Efficient data structure to maintain SKU access counts.</li>
+      <li><strong>Heap / Priority Queue:</strong> Keeps top-K hottest items in constant time — useful for dynamic layouts.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Like placing fast-moving grocery items near the store entrance, Flipkart reorders its warehouse layout based on real-time product popularity.</p>
+    <h2>📚 Explanation of Concepts</h2>
+    <ul>
+      <li><strong>Greedy Algorithm:</strong> At each step, make the locally optimal choice — here, place most accessed items in the front.</li>
+      <li><strong>Heap / Priority Queue:</strong> A binary tree-based structure where highest-frequency items bubble to the top. Used when frequent updates are needed.</li>
+      <li><strong>Hash Map:</strong> Associates each item (SKU) with how many times it's accessed, with average O(1) access and update time.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Improves fulfillment efficiency, reduces labor costs, and supports faster delivery during peak sales events.</p>
+    <h2>📊 Time & Space Complexity</h2>
+    <ul>
+      <li>Greedy Sort: O(N log N)</li>
+      <li>Hash Map Frequency Count: O(N)</li>
+      <li>Top-K with Heap: O(N log K)</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (Greedy Sorting - C++)</h2>
+    <h2>💥 Real-World Impact</h2>
+    <ul>
+      <li>🔥 20-30% faster order picking during sales.</li>
+      <li>💰 Reduced warehouse labor costs.</li>
+      <li>🚚 Faster delivery -> Higher customer satisfaction.</li>
+    </ul>
+
+    <h2>💻 Sample Code (Greedy Sorting in C++)</h2>
     <pre><code>#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;unordered_map&gt;
-#include &lt;queue&gt;
 #include &lt;algorithm&gt;
 using namespace std;
 
@@ -104,20 +126,25 @@ int main() {
         {"Shoes", 250}, {"T-shirt", 180}, {"Book", 220}
     };
 
-    // Convert to vector for sorting
     vector&lt;pair&lt;string, int&gt;&gt; items(accessFrequency.begin(), accessFrequency.end());
 
-    // Sort by frequency (descending)
     sort(items.begin(), items.end(), [](auto &a, auto &b) {
         return a.second &gt; b.second;
     });
 
-    cout &lt;&lt; "Optimal Warehouse Placement Order:\n";
+    cout &lt;&lt; "\nOptimal Warehouse Placement Order:\n";
     for (auto &item : items) {
         cout &lt;&lt; item.first &lt;&lt; " (" &lt;&lt; item.second &lt;&lt; ")\n";
     }
     return 0;
 }</code></pre>
+
+    <h2>🖼️ Visual Suggestions</h2>
+    <ul>
+      <li>Heatmap image of warehouse showing item popularity zones.</li>
+      <li>Bar chart: SKU vs Access Count.</li>
+      <li>Before vs After layout sketch: Popular items moving closer to dispatch.</li>
+    </ul>
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
