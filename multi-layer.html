@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multilayered Answer Generation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p, ul {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #2874f0;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Multilayered Answer Generation Using Semantic Graph Traversal</h1>
+
+    <h2>🎯 Problem Statement</h2>
+    <p>Users often search online with little background on complex topics. Most systems either provide too much or too little information at once. What’s missing is a <strong>layered explanation</strong> that adapts to the user’s level of understanding. This project solves that by designing a system that answers a query in three levels: beginner, intermediate, and expert — much like a personal tutor guiding you through a topic.</p>
+
+    <h2>🔍 Approach Overview</h2>
+    <ol>
+      <li><strong>Query Input:</strong> Accepts a user’s keyword-based query.</li>
+      <li><strong>Wikipedia Crawling:</strong> Fetches content and linked subtopics via anchor texts.</li>
+      <li><strong>Subtopic Ranking:</strong> Uses hybrid similarity:
+        <ul>
+          <li><span class="highlight">Wu-Palmer (WordNet)</span>: Measures conceptual closeness.</li>
+          <li><span class="highlight">SBERT cosine similarity</span>: Captures sentence-level semantic similarity.</li>
+        </ul>
+      </li>
+      <li><strong>Keyword Extraction:</strong> Uses:
+        <ul>
+          <li><strong>RAKE, KeyBERT, spaCy</strong> for candidate terms.</li>
+          <li><strong>BERT Embedding Clustering</strong> for refinement.</li>
+        </ul>
+      </li>
+      <li><strong>Difficulty Tiering:</strong> Categorizes top 100 terms into:
+        <ul>
+          <li><strong>Level 1:</strong> High-frequency, simple terms</li>
+          <li><strong>Level 2:</strong> Technical, mid-complexity terms</li>
+          <li><strong>Level 3:</strong> Abstract or domain-specific terms</li>
+        </ul>
+      </li>
+      <li><strong>Semantic Graph Construction:</strong>
+        <ul>
+          <li>Nodes = Keywords</li>
+          <li>Edges = Cosine similarity</li>
+          <li>Graph modeled and queried via <strong>Neo4j</strong></li>
+        </ul>
+      </li>
+      <li><strong>Keyword Layering:</strong> A <span class="highlight">Breadth-First Search (BFS)</span> from the central node organizes keywords by conceptual depth.</li>
+      <li><strong>Answer Generation:</strong> Query + keyword layer is passed to a language model like <strong>LLaMA</strong> to generate:
+        <ul>
+          <li><strong>Level 1:</strong> Basic Explanation</li>
+          <li><strong>Level 2:</strong> Intermediate Understanding</li>
+          <li><strong>Level 3:</strong> Expert Insight</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>🧠 Concept Highlights</h2>
+    <ul>
+      <li><strong>Wu-Palmer Similarity:</strong> Measures depth-based semantic closeness in taxonomy trees (WordNet).</li>
+      <li><strong>SBERT:</strong> Sentence-transformer that encodes semantic similarity between query and document or keyword.</li>
+      <li><strong>Neo4j:</strong> Graph database that enables efficient semantic relationship modeling and BFS traversal.</li>
+      <li><strong>LLaMA:</strong> Large Language Model used for generative responses across difficulty levels.</li>
+    </ul>
+
+    <h2>🧪 Code Snippet (Keyword Traversal - BFS in Python)</h2>
+    <pre><code>from collections import deque
+
+def bfs(graph, start_node):
+    visited = set()
+    queue = deque([(start_node, 0)])
+    levels = {0: [], 1: [], 2: []}
+
+    while queue:
+        node, depth = queue.popleft()
+        if node not in visited:
+            visited.add(node)
+            levels[min(depth, 2)].append(node)
+            for neighbor in graph[node]:
+                queue.append((neighbor, depth + 1))
+
+    return levels</code></pre>
+
+    <h2>📈 Impact and Benefits</h2>
+    <ul>
+      <li>📚 <strong>Educational Value:</strong> Helps users of all levels learn concepts gradually.</li>
+      <li>🎯 <strong>Adaptive UX:</strong> Feels like a personal tutor for search and Q&A.</li>
+      <li>🧠 <strong>Explainable AI:</strong> The graph structure + layered output makes the reasoning process visible and auditable.</li>
+      <li>💡 <strong>Modular Pipeline:</strong> Each stage (retrieval, ranking, graph, generation) can be reused for other domains (e.g., medical, legal).</li>
+    </ul>
+
+    <h2>🚀 Future Enhancements</h2>
+    <ul>
+      <li>Add <strong>user profiling</strong> to automatically adjust the starting difficulty level.</li>
+      <li>Visualize semantic graph and layer transitions in a web app.</li>
+      <li>Experiment with <strong>cross-encoder SBERT</strong> for deeper query-keyword interaction.</li>
+    </ul>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
