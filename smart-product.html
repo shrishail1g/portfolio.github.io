@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semantic Ranking with LTR</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p, ul {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #2874f0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>Flipkart Business Case</header>
+  <div class="container">
+    <h1>Enhancing Document Ranking with Semantic Features in Learning to Rank Models</h1>
+
+    <h2>🛒 Motivation: Smarter Search for Smarter Shopping</h2>
+    <p>Ever searched for "long-lasting phone" and got listings that only matched the word “phone”? That's the limitation of traditional ranking systems. In modern e-commerce, understanding **what the user really means** is critical to deliver relevant results. This project enhances document ranking by combining both lexical and semantic signals, ensuring search results are not just keyword-matched but meaning-aware.</p>
+
+    <h2>📌 Problem Statement</h2>
+    <p>Traditional Learning to Rank (LTR) systems rely heavily on sparse keyword-based methods like BM25. While effective, they struggle to understand user intent or context, especially when synonyms or related concepts are involved. Our goal is to build a hybrid LTR model that integrates both lexical similarity and semantic context to rank documents (products) more accurately in response to queries.</p>
+
+    <h2>🧪 Approach Overview</h2>
+    <ol>
+      <li><strong>Custom Dataset Creation:</strong> E-commerce domain dataset with <em>query → 5 documents</em> per sample, annotated with relevance labels (0 to 4).</li>
+      <li><strong>Feature Engineering:</strong>
+        <ul>
+          <li>Sparse Features: BM25 score, TF-IDF similarity</li>
+          <li>Semantic Features: SBERT embedding cosine similarity</li>
+        </ul>
+      </li>
+      <li><strong>Model Training:</strong> Used <span class="highlight">LambdaMART</span>, a tree-based LTR algorithm, on both baseline and hybrid features.</li>
+      <li><strong>Evaluation:</strong> NDCG metric used to measure improvements in ranked relevance.</li>
+      <li><strong>Interpretability:</strong> Qualitative inspection of rank shifts + keyword clouds to explain improved rankings.</li>
+    </ol>
+
+    <h2>🧠 Key Concepts</h2>
+    <ul>
+      <li><strong>BM25:</strong> A ranking function based on term frequency and inverse document frequency. Great for exact keyword matching.</li>
+      <li><strong>SBERT (Sentence-BERT):</strong> A transformer-based model that encodes query and document into vector embeddings that reflect meaning.</li>
+      <li><strong>LambdaMART:</strong> An LTR algorithm using gradient-boosted decision trees. Trained to minimize ranking loss (e.g., pairwise relevance violations).</li>
+    </ul>
+
+    <h2>🧮 Metric Used: NDCG (Normalized Discounted Cumulative Gain)</h2>
+    <p>NDCG rewards placing highly relevant documents higher in the ranking. The higher the NDCG@5 or NDCG@10 score, the better the ranking system understands relevance.</p>
+
+    <h2>📈 Results and Insights</h2>
+    <ul>
+      <li>📊 <strong>+11% improvement</strong> in NDCG score with semantic-enhanced features.</li>
+      <li>🔍 Cases showed promotion of contextually relevant items that did not share query keywords (e.g., “battery backup” matched with “long battery life”).</li>
+      <li>📄 Ideal document construction improved model generalization by defining what a “perfect” answer looks like for each query.</li>
+    </ul>
+
+    <h2>🧵 Qualitative Analysis</h2>
+    <p>We examined documents that improved in rank after adding SBERT-based features. Using keyword clouds and similarity maps, we observed how concepts like “durability”, “camera quality” or “fast charging” influenced relevance — even when the query didn’t directly mention them.</p>
+
+    <h2>💥 Business & Technical Impact</h2>
+    <ul>
+      <li>🛍️ <strong>Better product discoverability:</strong> Semantic relevance matches user expectations more closely.</li>
+      <li>📦 <strong>Reduced bounce rate:</strong> Users find what they need faster, improving conversion.</li>
+      <li>⏱️ <strong>Efficient runtime inference:</strong> SBERT embeddings are precomputed and cached for scalable deployment.</li>
+      <li>🧠 <strong>Explainable AI:</strong> Keyword cloud + similarity score visualizations make LTR decisions interpretable for non-technical stakeholders.</li>
+    </ul>
+
+    <h2>🚀 Future Work</h2>
+    <ul>
+      <li>Incorporate <strong>cross-encoder architectures</strong> for deeper interaction modeling.</li>
+      <li>Use <strong>clickstream data</strong> to further refine relevance labels.</li>
+      <li>Explore <strong>multilingual SBERT</strong> for supporting regional language queries.</li>
+    </ul>
+
+    <a href="index.html" class="back">← Back to Business Cases</a>
+  </div>
+</body>
+
+</html>
