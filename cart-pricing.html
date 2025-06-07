@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shopping Cart Price Calculation</title>
+  <title>Shopping Cart Price Optimization</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
@@ -22,53 +22,79 @@
 <body>
   <header>Flipkart Business Case</header>
   <div class="container">
-    <h1>Shopping Cart Price Calculation</h1>
+    <h1>Smart Cart Pricing Engine</h1>
+
+    <h2>🛒 The Story</h2>
+    <p>Imagine a Flipkart user during the Big Billion Days sale. Their cart is filled with phones, shoes, and books. Each product has multiple discounts, coupon codes, GST, and delivery charges. Flipkart must calculate the final price instantly without errors to ensure a smooth and trustworthy checkout experience.</p>
 
     <h2>📌 Business Case</h2>
-    <p>When users add multiple items to their cart, Flipkart must calculate final prices with GST, discounts, coupons, and delivery charges applied instantly.</p>
+    <p>Flipkart must compute cart prices in milliseconds to avoid slowdowns and inconsistencies during checkout. This includes applying product-specific discounts, promotional coupons, GST based on category, and delivery fee calculations.</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <h2>🔍 Proposed Approach</h2>
     <ul>
-      <li><strong>Greedy Algorithms:</strong> Apply best discount offers in order of impact.</li>
-      <li><strong>Dynamic Pricing Rules:</strong> Modular functions handle GST, delivery zones, coupon policies.</li>
-      <li><strong>Design Patterns:</strong> Strategy and Composite for flexible discount rule chaining.</li>
+      <li><strong>Modular Pricing Engine:</strong> Break pricing logic into small rule-based modules (GST, discount, delivery).</li>
+      <li><strong>Greedy Algorithm:</strong> Prioritize and apply the most beneficial discounts first.</li>
+      <li><strong>Design Patterns:</strong> Use Strategy Pattern to plug-and-play various pricing strategies for dynamic campaigns.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Flipkart's checkout logic needs to mimic how a smart cashier would apply the best set of discounts and taxes to your cart in real-time.</p>
+    <h2>🧠 Algorithm Intuition & Concepts</h2>
+    <ul>
+      <li><strong>Greedy Algorithms:</strong> Select the best discount at each step to minimize final price. Fast and effective for independent discount rules.</li>
+      <li><strong>Strategy Pattern:</strong> Behavioral design pattern allowing interchangeable pricing logic (e.g., flash sale, BOGO, seasonal offers).</li>
+      <li><strong>Composite Pattern:</strong> Allows chaining multiple discounts logically and applying them as a single operation on a cart.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Improves cart conversion rates, reduces payment mismatches, and ensures better coupon utilization without overloading pricing engines.</p>
+    <h2>⏱️ Time & Space Complexity</h2>
+    <ul>
+      <li><strong>Greedy Rule Evaluation:</strong> O(n) per item in cart.</li>
+      <li><strong>Total Pricing Calculation:</strong> O(n) time, O(1) space since no extra memory grows with cart size.</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (Simple Pricing Logic - C++)</h2>
+    <h2>📊 Business Impact</h2>
+    <ul>
+      <li><strong>Speed:</strong> Real-time pricing ensures zero cart abandonment due to delays.</li>
+      <li><strong>Accuracy:</strong> Prevents coupon misuse or over-application, saving revenue leakage.</li>
+      <li><strong>Scalability:</strong> Handles 10k+ concurrent checkouts with predictable performance.</li>
+    </ul>
+
+    <h2>💻 Sample C++ Implementation</h2>
     <pre><code>#include &lt;iostream&gt;
 #include &lt;vector&gt;
 using namespace std;
 
 struct Item {
     double price;
-    double discount;
-    double gst;
+    double discount; // flat discount
+    double gst;       // in percentage
+    bool freeDelivery;
 };
 
-double calculateFinalPrice(const vector&lt;Item&gt;& items) {
+double calculateFinalPrice(const vector&lt;Item&gt;& items, double deliveryCharge) {
     double total = 0.0;
     for (auto &item : items) {
         double discounted = item.price - item.discount;
         double taxed = discounted + (discounted * item.gst / 100.0);
         total += taxed;
     }
+    bool anyFree = false;
+    for (auto &item : items) {
+        if (item.freeDelivery) {
+            anyFree = true;
+            break;
+        }
+    }
+    if (!anyFree) total += deliveryCharge;
     return total;
 }
 
 int main() {
     vector&lt;Item&gt; cart = {
-        {1000, 200, 18},
-        {500, 50, 12},
-        {1500, 300, 5}
+        {1000, 200, 18, false},
+        {500, 50, 12, true},
+        {1500, 300, 5, false}
     };
-
-    cout &lt;&lt; "Final Cart Price: Rs." &lt;&lt; calculateFinalPrice(cart) &lt;&lt; endl;
+    double deliveryCharge = 50;
+    cout &lt;&lt; "Final Cart Price: Rs. " &lt;&lt; calculateFinalPrice(cart, deliveryCharge) &lt;&lt; endl;
     return 0;
 }</code></pre>
 
