@@ -4,18 +4,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Region Based Delivery Hub</title>
+  <title>Region-Based Delivery Hub Allocation</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
-    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
-    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
-    h1 { color: #212121; margin-bottom: 20px; }
-    h2 { color: #2874f0; margin-top: 32px; }
-    p { color: #424242; line-height: 1.6; }
-    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
-    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
-    a.back:hover { text-decoration: underline; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    ul {
+      color: #424242;
+      padding-left: 20px;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
@@ -24,40 +79,97 @@
   <div class="container">
     <h1>Region-Based Delivery Hub Allocation</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart wants to dynamically assign products to regional delivery hubs based on delivery address, product type, and hub load.</p>
+    <h2>🚚 The Story</h2>
+    <p>India’s diverse geography brings unique logistics challenges. When orders pour in from across the country — whether it's Mumbai or a small town in Assam — Flipkart must assign the best-suited delivery hub for quick and cost-efficient fulfillment.</p>
+    <p>Imagine if Flipkart had to manually allocate hubs for millions of daily orders. Delays, rising shipping costs, and overwhelmed warehouses would cripple the system.</p>
+    <p>So, how do we automate intelligent, region-based hub allocation? Let's dive in.</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <h2>📌 Problem Statement</h2>
+    <p>Given customer locations, product constraints, and available regional hubs, dynamically assign each order to a delivery hub that:</p>
     <ul>
-      <li><strong>Clustering (K-means):</strong> Segment geographic zones.</li>
-      <li><strong>Greedy Load Assignment:</strong> Assign hubs minimizing distance and balancing load.</li>
-      <li><strong>Graph Shortest Paths:</strong> For backup routing between hubs.</li>
+      <li>Minimizes delivery distance or time</li>
+      <li>Balances load across hubs</li>
+      <li>Handles backup routing in case of hub unavailability</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Just like food delivery apps optimize for nearest kitchen, Flipkart clusters orders and routes them to the most efficient fulfillment hub.</p>
+    <h2>🧠 Algorithmic Approach</h2>
+    <ul>
+      <li><strong>K-Means Clustering:</strong> Segment India into geographic zones using order pin codes.</li>
+      <li><strong>Greedy Load Assignment:</strong> Within a cluster, pick the nearest hub with available capacity.</li>
+      <li><strong>Dijkstra’s Shortest Path:</strong> For rerouting to alternative hubs if a preferred one is overloaded or unreachable.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Speeds up delivery time, reduces inter-hub shipping costs, and manages capacity better in high-demand regions.</p>
+    <h2>📘 Concept Primer</h2>
+    <ul>
+      <li><strong>Clustering (K-Means):</strong> An unsupervised ML algorithm that groups geographical coordinates (latitude, longitude) into ‘K’ regions. Each hub becomes the centroid of a region.</li>
+      <li><strong>Greedy Assignment:</strong> Assign each order to the closest hub available, making a local optimal choice at each step. Fast and effective in real-time systems.</li>
+      <li><strong>Dijkstra’s Algorithm:</strong> Calculates the shortest distance from one hub to others in a weighted graph, useful for inter-hub fallbacks during network disruption.</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (Greedy Assignment - Python)</h2>
-    <pre><code>orders = ["Mumbai", "Pune", "Delhi", "Bangalore"]
-hubs = ["Mumbai_Hub", "Delhi_Hub"]
-distance = {
-  ("Mumbai", "Mumbai_Hub"): 5,
-  ("Pune", "Mumbai_Hub"): 8,
-  ("Delhi", "Delhi_Hub"): 4,
-  ("Bangalore", "Mumbai_Hub"): 12
+    <h2>📊 Time & Space Complexity</h2>
+    <ul>
+      <li><strong>Greedy Hub Assignment:</strong> O(N × H) where N = number of orders, H = number of hubs.</li>
+      <li><strong>K-Means (Offline Clustering):</strong> O(N × K × I), where K = clusters, I = iterations (converges fast).</li>
+      <li><strong>Dijkstra (Backup Routing):</strong> O(E log V) per routing decision.</li>
+    </ul>
+
+    <h2>💥 Business Impact</h2>
+    <ul>
+      <li>🚀 <strong>Faster Delivery:</strong> Nearest-hub assignment reduces delivery time by up to 25% in urban zones.</li>
+      <li>💸 <strong>Reduced Operational Cost:</strong> Less inter-hub transfer means lower fuel and manpower costs.</li>
+      <li>📦 <strong>Balanced Hub Utilization:</strong> Prevents bottlenecks by distributing orders intelligently.</li>
+      <li>📊 <strong>Scalable System:</strong> Supports millions of orders daily with minimal latency.</li>
+    </ul>
+
+    <h2>💻 C++ Code Example (Greedy Hub Assignment)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;map&gt;
+#include &lt;limits&gt;
+#include &lt;string&gt;
+using namespace std;
+
+struct Order {
+    string city;
+};
+
+struct Hub {
+    string name;
+    map&lt;string, int&gt; cityDistance; // Distance from cities to this hub
+};
+
+string assignToNearestHub(const Order& order, const vector&lt;Hub&gt;& hubs) {
+    int minDist = INT_MAX;
+    string assignedHub = "None";
+    
+    for (const auto& hub : hubs) {
+        if (hub.cityDistance.count(order.city)) {
+            int dist = hub.cityDistance.at(order.city);
+            if (dist &lt; minDist) {
+                minDist = dist;
+                assignedHub = hub.name;
+            }
+        }
+    }
+    return assignedHub;
 }
 
-def assign_hubs(orders):
-  assigned = {}
-  for o in orders:
-    nearest = min(hubs, key=lambda h: distance.get((o, h), float('inf')))
-    assigned[o] = nearest
-  return assigned
+int main() {
+    vector&lt;Order&gt; orders = { {"Mumbai"}, {"Pune"}, {"Delhi"}, {"Bangalore"} };
 
-print(assign_hubs(orders))</code></pre>
+    vector&lt;Hub&gt; hubs = {
+        {"Mumbai_Hub", {{"Mumbai", 5}, {"Pune", 8}, {"Bangalore", 12}}},
+        {"Delhi_Hub",  {{"Delhi", 4}}}
+    };
+
+    for (const auto& order : orders) {
+        string hub = assignToNearestHub(order, hubs);
+        cout &lt;&lt; "Order from " &lt;&lt; order.city &lt;&lt; " assigned to: " &lt;&lt; hub &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre>
+
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
