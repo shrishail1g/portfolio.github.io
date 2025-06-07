@@ -7,54 +7,143 @@
   <title>Stockout Prevention Alert</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f1f3f6; margin: 0; padding: 0; }
-    header { background-color: #2874f0; padding: 16px; color: white; font-size: 20px; font-weight: bold; text-align: center; }
-    .container { max-width: 960px; margin: 40px auto; background: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); padding: 32px; border-radius: 8px; }
-    h1 { color: #212121; margin-bottom: 20px; }
-    h2 { color: #2874f0; margin-top: 32px; }
-    p { color: #424242; line-height: 1.6; }
-    pre { background-color: #f7f7f7; padding: 16px; overflow-x: auto; border-left: 5px solid #2874f0; font-size: 14px; }
-    a.back { display: inline-block; margin-top: 30px; color: #2874f0; text-decoration: none; font-weight: bold; }
-    a.back:hover { text-decoration: underline; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f1f3f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2874f0;
+      padding: 16px;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      border-radius: 8px;
+    }
+
+    h1 {
+      color: #212121;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #2874f0;
+      margin-top: 32px;
+    }
+
+    p,
+    ul {
+      color: #424242;
+      line-height: 1.6;
+    }
+
+    pre {
+      background-color: #f7f7f7;
+      padding: 16px;
+      overflow-x: auto;
+      border-left: 5px solid #2874f0;
+      font-size: 14px;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 30px;
+      color: #2874f0;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 
 <body>
   <header>Flipkart Business Case</header>
   <div class="container">
-    <h1>Stockout Prevention Alert</h1>
+    <h1>Stockout Prevention Alert System</h1>
 
-    <h2>📌 Business Case</h2>
-    <p>Flipkart wants to predict when a product is at risk of running out of stock and alert sellers in advance to replenish inventory.</p>
+    <h2>🚨 Real-World Problem</h2>
+    <p>Imagine a festive sale is live, and thousands of customers search for "iPhone 13" only to find it out of stock. Not only do we lose revenue, but the customer experience suffers and brand trust declines.</p>
+    <p>What if Flipkart could predict product shortages before they happen and alert sellers to replenish stock in advance?</p>
 
-    <h2>🧠 Algorithms Used</h2>
+    <h2>📌 Problem Statement</h2>
+    <p>Design a system that predicts upcoming stockouts using past sales data and sends early alerts to sellers for timely inventory replenishment.</p>
+
+    <h2>🧠 Algorithms & Techniques Used</h2>
     <ul>
-      <li><strong>Time Series Forecasting (ARIMA / LSTM):</strong> Predict future sales volume.</li>
-      <li><strong>Threshold-Based Triggers:</strong> Trigger alerts when predicted stock < reorder level.</li>
-      <li><strong>Regression Models:</strong> Estimate average daily movement per product-category.</li>
+      <li><strong>Time Series Forecasting (ARIMA / LSTM):</strong> Predict sales trends for each product over time.</li>
+      <li><strong>Threshold-Based Triggering:</strong> If forecasted stock falls below the reorder point, raise an alert.</li>
+      <li><strong>Regression Models:</strong> Estimate average daily sales for fast-moving SKUs using historical data.</li>
     </ul>
 
-    <h2>🧠 Intuition</h2>
-    <p>Just like a petrol light warns you before running empty, Flipkart predicts low stock events and prompts sellers to refill in time.</p>
+    <h2>📘 Concept Primer</h2>
+    <ul>
+      <li><strong>ARIMA (AutoRegressive Integrated Moving Average):</strong> A statistical model that captures trend and seasonality in time series sales data.</li>
+      <li><strong>LSTM (Long Short-Term Memory):</strong> A neural network capable of learning long-term sales dependencies and handling irregular sales patterns (e.g., during festivals).</li>
+      <li><strong>Threshold Triggering:</strong> A simple yet effective technique where alerts are generated if predicted stock drops below a defined reorder level.</li>
+    </ul>
 
-    <h2>💥 Impact</h2>
-    <p>Prevents lost sales due to stockouts, ensures high availability of fast-moving items, improves seller performance metrics.</p>
+    <h2>📊 Time & Space Complexity</h2>
+    <ul>
+      <li><strong>ARIMA (Training):</strong> O(n²) — manageable offline for each SKU.</li>
+      <li><strong>LSTM (Training):</strong> O(n × d × h) where n = days, d = features, h = hidden units.</li>
+      <li><strong>Alerting Logic:</strong> O(n) for n products checked in real-time.</li>
+    </ul>
 
-    <h2>💻 Sample Base Code (Stock Alert Trigger - Python)</h2>
-    <pre><code>stock_level = {
-  "iPhone 13": 20,
-  "Redmi Note 12": 4,
-  "Samsung M14": 0
+    <h2>💥 Business Impact</h2>
+    <ul>
+      <li>🛒 <strong>Increase Sales:</strong> Prevents 12-18% of lost orders caused by stockouts.</li>
+      <li>📦 <strong>Optimized Inventory:</strong> Reduces overstocking by enabling dynamic replenishment.</li>
+      <li>📈 <strong>Improves Seller Performance:</strong> Sellers receive predictive insights and maintain high SLA metrics.</li>
+      <li>⚙️ <strong>Scalability:</strong> Can support millions of SKUs and real-time alerts.</li>
+    </ul>
+
+    <h2>💻 Sample C++ Code (Threshold-Based Alert System)</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+void alertLowStock(const unordered_map&lt;string, int&gt;& stockLevels, int threshold) {
+    for (const auto&amp; item : stockLevels) {
+        if (item.second &lt; threshold) {
+            cout &lt;&lt; "ALERT: Replenish stock for '" &lt;&lt; item.first 
+                 &lt;&lt; "' - Remaining: " &lt;&lt; item.second &lt;&lt; endl;
+        }
+    }
 }
 
-threshold = 5
+int main() {
+    unordered_map&lt;string, int&gt; stock = {
+        {"iPhone 13", 20},
+        {"Redmi Note 12", 4},
+        {"Samsung M14", 0}
+    };
+    int threshold = 5;
+    alertLowStock(stock, threshold);
+    return 0;
+}</code></pre>
 
-def alert(stock_level):
-  for product, count in stock_level.items():
-    if count &lt; threshold:
-      print(f"ALERT: Replenish {product}! Remaining: {count}")
-
-alert(stock_level)</code></pre>
+    <h2>🔁 Future Enhancements</h2>
+    <ul>
+      <li>Integrate with <strong>real-time warehouse dashboards</strong> for continuous monitoring.</li>
+      <li>Use <strong>Reinforcement Learning</strong> to dynamically adapt reorder levels based on seasonality.</li>
+      <li>Incorporate <strong>supplier lead time</strong> and <strong>sales velocity</strong> into the alert model.</li>
+    </ul>
 
     <a href="index.html" class="back">← Back to Business Cases</a>
   </div>
